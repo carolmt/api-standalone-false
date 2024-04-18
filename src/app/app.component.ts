@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RequestService } from './services/request.service';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +11,7 @@ export class AppComponent implements OnInit{
   title = 'apis-standaloneFalse';
   URL_BASE ='https://jsonplaceholder.typicode.com/posts';
 
+  constructor(private requestService: RequestService) {}
 
   ngOnInit(): void {
     console.log('Inicio del proyecto');
@@ -45,6 +47,51 @@ export class AppComponent implements OnInit{
     method: 'DELETE',
     });
   }
-   
 
+  getAllPosts() {
+    this.requestService.getPosts().subscribe({
+      next: (response) => { console.log(response)}
+    });
+  }
+
+  createPostWithAngular() {
+    let post = {
+      title: 'foo',
+      body: 'bar',
+      userId: 1,
+    };
+    this.requestService.createPost(post).subscribe({
+      next: (response) => { console.log(response)},
+      error: (error) => { console.log(error)}
+    });
+  }
+
+  updatePostWithAngular() {
+    let post = {
+      userId: 1,
+      id: 10,
+      title: 'Ejemplo de post',
+      body: 'aqui va el texto del post',
+      message: 'Post creado como ejemplo;'
+    };
+    this.requestService.updatePost(post).subscribe({
+      next: (response) => {console.log(response)},
+      error: (error) => {console.log(error)}
+    });
+  }
+
+  deletePostWithAngular() {
+    let post = {
+      userId: 1,
+      id: 10,
+      title: 'Ejemplo de post',
+      body: 'aqui va el texto del post',
+      message: 'Post creado como ejemplo;'
+    };
+    this.requestService.deletePost(post.id).subscribe({
+      next: (response) => console.log(response),
+      error: (error) => console.log(error)
+  
+    });
+  }
 }
